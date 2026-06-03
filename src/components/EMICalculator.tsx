@@ -74,7 +74,7 @@ export default function EMICalculator() {
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40 px-4 h-14 flex items-center gap-4">
-        <Link to="/" className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+        <Link to="/live" className="p-1 hover:bg-gray-100 rounded-full transition-colors">
           <ChevronLeft size={24} className="text-gray-900" />
         </Link>
         <h1 className="text-lg font-bold text-gray-900 flex-1">Product Price Center</h1>

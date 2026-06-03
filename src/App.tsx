@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { LayoutDashboard } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
@@ -56,7 +56,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
             <img src="https://www.google.com/favicon.ico" className="w-4 h-4" alt="Google" />
             Sign in with Google
           </button>
-          <Link to="/" className="block text-xs font-bold text-orange-400 hover:underline hover:text-orange-300 transition-colors uppercase tracking-widest">
+          <Link to="/live" className="block text-xs font-bold text-orange-400 hover:underline hover:text-orange-300 transition-colors uppercase tracking-widest">
             Back to Customer Store
           </Link>
         </div>
@@ -71,8 +71,11 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<CustomerShop />} />
-        <Route path="/emi-calculator" element={<EMICalculator />} />
+        <Route path="/" element={<Navigate to="/live" replace />} />
+        <Route path="/live" element={<CustomerShop />} />
+        <Route path="/live/emi-calculator" element={<EMICalculator />} />
+        <Route path="/emi-calculator" element={<Navigate to="/live/emi-calculator" replace />} />
+        
         <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
         <Route path="/admin/inventory" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
         <Route path="/admin/sales" element={<AdminLayout><AdminDashboard /></AdminLayout>} />

@@ -393,7 +393,7 @@ export default function CustomerShop() {
 
             {/* Quick Link to Admin Section */}
             <Link 
-              to="/admin" 
+              to="/mehedy" 
               className="p-2.5 bg-[#1b1b1b] hover:bg-neutral-800 text-white rounded-full transition-all"
               title="Admin Workspace"
             >
@@ -821,7 +821,7 @@ export default function CustomerShop() {
                 </div>
                 <h3 className="text-sm font-bold text-gray-800">No home appliances right now</h3>
                 <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto">Please visit the Admin section to add real air conditioner or kitchen appliance entities.</p>
-                <Link to="/admin" className="inline-block mt-4 text-xs font-black text-orange-500 border border-orange-500 px-4 py-2 rounded-xl bg-white hover:bg-orange-50 transition-all">
+                <Link to="/mehedy" className="inline-block mt-4 text-xs font-black text-orange-500 border border-orange-500 px-4 py-2 rounded-xl bg-white hover:bg-orange-50 transition-all">
                   LOG IN ADMIN
                 </Link>
               </div>
@@ -909,7 +909,7 @@ export default function CustomerShop() {
             {/* Link to Admin */}
             <div className="pt-4">
               <Link
-                to="/admin"
+                to="/mehedy"
                 className="w-full py-3 border-2 border-gray-200 hover:border-black rounded-2xl text-center text-xs font-black uppercase tracking-wider transition-all block text-gray-700 hover:text-black bg-white"
               >
                 ADMIN WORKSPACE LOG IN

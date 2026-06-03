@@ -76,10 +76,10 @@ export default function App() {
         <Route path="/live/emi-calculator" element={<EMICalculator />} />
         <Route path="/emi-calculator" element={<Navigate to="/live/emi-calculator" replace />} />
         
-        <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        <Route path="/admin/inventory" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        <Route path="/admin/sales" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        <Route path="/admin/orders" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+        <Route path="/mehedy" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+        <Route path="/mehedy/inventory" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+        <Route path="/mehedy/sales" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+        <Route path="/mehedy/orders" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
       </Routes>
     </Router>
   );

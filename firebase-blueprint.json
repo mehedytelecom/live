@@ -1,0 +1,110 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A product in the shop inventory.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Product name" },
+        "brand": { "type": "string", "description": "Product brand (e.g. Infinix, TECNO)" },
+        "description": { "type": "string", "description": "Product description" },
+        "ram": { "type": "string", "description": "RAM variant (e.g. 8GB)" },
+        "rom": { "type": "string", "description": "ROM variant (e.g. 128GB)" },
+        "purchase_price": { "type": "number", "description": "Purchase price per piece" },
+        "selling_price": { "type": "number", "description": "Selling price per piece" },
+        "discount_price": { "type": "number", "description": "Discounted actual selling price" },
+        "category": { "type": "string", "description": "Assigned category name" },
+        "profit_margin": { "type": "number", "description": "Profit per piece (selling - purchase)" },
+        "quantity": { "type": "integer", "description": "Available stock quantity" },
+        "emi_available": { "type": "boolean", "description": "Whether EMI is available" },
+        "emi_months": { "type": "integer", "description": "Number of EMI months" },
+        "emi_down_payment": { "type": "number", "description": "Down payment amount" },
+        "emi_profit": { "type": "number", "description": "Extra profit for EMI" },
+        "image_urls": { "type": "array", "items": { "type": "string" }, "description": "List of image URLs or file IDs" },
+        "created_at": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["name", "purchase_price", "selling_price", "quantity"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "A product category list.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Category name" },
+        "image": { "type": "string", "description": "Category representation image URL or fileId" }
+      },
+      "required": ["name", "image"]
+    },
+    "SliderItem": {
+      "title": "Slider Item",
+      "description": "A promotion banner slider.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Feature slide top title" },
+        "subtitle": { "type": "string", "description": "Main subtitle description" },
+        "discount": { "type": "string", "description": "Promotion discount label" },
+        "color": { "type": "string", "description": "Tailwind gradient colour specification" },
+        "features": { "type": "array", "items": { "type": "string" }, "description": "Custom key selling points features list" },
+        "imageUrl": { "type": "string", "description": "Visual illustration image" },
+        "order": { "type": "integer", "description": "Custom order position" }
+      },
+      "required": ["title", "subtitle", "imageUrl"]
+    },
+    "OfflineSale": {
+      "title": "Offline Sale",
+      "description": "A manual sale entry for offline customers.",
+      "type": "object",
+      "properties": {
+        "customer_name": { "type": "string", "description": "Customer name" },
+        "phone": { "type": "string", "description": "Customer phone number" },
+        "nid": { "type": "string", "description": "Customer NID number" },
+        "address": { "type": "string", "description": "Customer address" },
+        "guarantor": { "type": "string", "description": "Guarantor phone number" },
+        "product_id": { "type": "string", "description": "ID of the sold product" },
+        "product_name": { "type": "string", "description": "Name of the sold product" },
+        "image_file_ids": { "type": "array", "items": { "type": "string" }, "description": "Telegram file IDs of uploaded images" },
+        "sale_date": { "type": "string", "format": "date-time", "description": "Date of sale" },
+        "profit": { "type": "number", "description": "Total profit from this sale" }
+      },
+      "required": ["customer_name", "phone", "product_id", "sale_date", "profit"]
+    },
+    "OnlineOrder": {
+      "title": "Online Order",
+      "description": "An order placed by a customer through the online shop.",
+      "type": "object",
+      "properties": {
+        "customer_name": { "type": "string", "description": "Customer name" },
+        "phone": { "type": "string", "description": "Customer phone number" },
+        "address": { "type": "string", "description": "Customer delivery address" },
+        "product_id": { "type": "string", "description": "ID of the ordered product" },
+        "product_name": { "type": "string", "description": "Name of the ordered product" },
+        "payment_method": { "type": "string", "enum": ["COD", "bKash", "Nagad"], "description": "Selected payment method" },
+        "order_date": { "type": "string", "format": "date-time", "description": "Date of order" },
+        "status": { "type": "string", "enum": ["pending", "completed", "deleted"], "description": "Current order status" }
+      },
+      "required": ["customer_name", "phone", "address", "product_id", "payment_method", "order_date", "status"]
+    }
+  },
+  "firestore": {
+    "/products": {
+      "schema": "Product",
+      "description": "Collection of shop products"
+    },
+    "/categories": {
+      "schema": "Category",
+      "description": "Collection of dynamic product categories"
+    },
+    "/sliders": {
+      "schema": "SliderItem",
+      "description": "Collection of dynamic promo banners"
+    },
+    "/offline_sales": {
+      "schema": "OfflineSale",
+      "description": "Collection of manual sales records"
+    },
+    "/online_orders": {
+      "schema": "OnlineOrder",
+      "description": "Collection of customer online orders"
+    }
+  }
+}

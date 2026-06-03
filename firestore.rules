@@ -1,0 +1,147 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: products
+// Fields:
+//   - name: string (required)
+//   - purchase_price: number (required)
+//   - selling_price: number (required)
+//   - profit_margin: number (required)
+//   - quantity: number (required)
+//   - image_urls: list (optional)
+//   - created_at: string (required)
+//
+// Collection: offline_sales
+// Fields:
+//   - customer_name: string (required)
+//   - phone: string (required)
+//   - nid: string (required)
+//   - address: string (required)
+//   - guarantor: string (required)
+//   - product_id: string (required)
+//   - product_name: string (required)
+//   - image_file_ids: list (required)
+//   - sale_date: string (required)
+//   - profit: number (required)
+//
+// Collection: online_orders
+// Fields:
+//   - customer_name: string (required)
+//   - phone: string (required)
+//   - address: string (required)
+//   - product_id: string (required)
+//   - product_name: string (required)
+//   - payment_method: string (required, enum: COD, bKash, Nagad)
+//   - order_date: string (required)
+//   - status: string (required, enum: pending, completed, deleted)
+//
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "mehedyhossain160619@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    function isValidProduct(data) {
+      return data.keys().hasAll(['name', 'brand', 'purchase_price', 'selling_price', 'quantity', 'profit_margin', 'created_at']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 200 &&
+             data.brand is string && data.brand.size() > 0 && data.brand.size() < 100 &&
+             (!('description' in data) || data.description is string) &&
+             (!('ram' in data) || data.ram is string) &&
+             (!('rom' in data) || data.rom is string) &&
+             data.purchase_price is number && data.purchase_price >= 0 &&
+             data.selling_price is number && data.selling_price >= 0 &&
+             (!('discount_price' in data) || data.discount_price is number) &&
+             (!('category' in data) || data.category is string) &&
+             data.quantity is int && data.quantity >= 0 &&
+             data.profit_margin is number &&
+             (!('emi_available' in data) || data.emi_available is bool) &&
+             (!('emi_months' in data) || data.emi_months is int) &&
+             (!('emi_down_payment' in data) || data.emi_down_payment is number) &&
+             (!('emi_profit' in data) || data.emi_profit is number) &&
+             data.created_at is string;
+    }
+
+    function isValidOfflineSale(data) {
+      return data.keys().hasAll(['customer_name', 'phone', 'nid', 'address', 'guarantor', 'product_id', 'product_name', 'image_file_ids', 'sale_date', 'profit']) &&
+             data.customer_name is string && data.customer_name.size() > 0 && data.customer_name.size() < 100 &&
+             data.phone is string && data.phone.size() >= 11 && data.phone.size() <= 15 &&
+             data.nid is string && data.nid.size() > 0 && data.nid.size() < 50 &&
+             data.address is string && data.address.size() > 0 && data.address.size() < 500 &&
+             data.guarantor is string && data.guarantor.size() >= 11 && data.guarantor.size() <= 15 &&
+             data.product_id is string &&
+             data.product_name is string &&
+             data.image_file_ids is list && data.image_file_ids.size() >= 1 &&
+             data.sale_date is string &&
+             data.profit is number;
+    }
+
+    function isValidOnlineOrder(data) {
+      return data.keys().hasAll(['customer_name', 'phone', 'address', 'product_id', 'product_name', 'payment_method', 'order_date', 'status']) &&
+             data.customer_name is string && data.customer_name.size() > 0 && data.customer_name.size() < 100 &&
+             data.phone is string && data.phone.size() >= 11 && data.phone.size() <= 15 &&
+             data.address is string && data.address.size() > 0 && data.address.size() < 500 &&
+             data.product_id is string &&
+             data.product_name is string &&
+             data.payment_method in ['COD', 'bKash', 'Nagad'] &&
+             data.order_date is string &&
+             data.status in ['pending', 'completed', 'deleted'];
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /products/{productId} {
+      // Products are readable by everyone (including unauthenticated customers)
+      allow read: if true;
+      // Only Admin can create, update, or delete products
+      allow create: if isAdmin() && isValidProduct(request.resource.data);
+      allow update: if isAdmin() && isValidProduct(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /categories/{categoryId} {
+      // Categories readable by anyone, modifiable by admin
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /sliders/{sliderId} {
+      // Sliders readable by anyone, modifiable by admin
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /offline_sales/{saleId} {
+      // Offline sales are private to Admin
+      allow read: if isAdmin();
+      allow create: if isAdmin() && isValidOfflineSale(request.resource.data);
+      allow update: if isAdmin() && isValidOfflineSale(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /online_orders/{orderId} {
+      // Orders can be read only by Admin
+      allow read: if isAdmin();
+      // Anyone can create an order (customers)
+      allow create: if isValidOnlineOrder(request.resource.data);
+      // Only Admin can update or delete orders
+      allow update: if isAdmin() && isValidOnlineOrder(request.resource.data);
+      allow delete: if isAdmin();
+    }
+  }
+}

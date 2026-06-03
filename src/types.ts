@@ -11,10 +11,6 @@ export interface Product {
   category?: string;
   profit_margin: number;
   quantity: number;
-  emi_available: boolean;
-  emi_months: number;
-  emi_down_payment: number;
-  emi_profit: number;
   image_urls: string[];
   created_at: string;
 }

@@ -329,12 +329,7 @@ export default function CustomerShop() {
 
     // Sub-tab Pill Sorting/Filtering
     if (activeSectionTab === 'best-deals') {
-      // Prioritize EMI option plus better price margins
-      list.sort((a, b) => {
-        if (a.emi_available && !b.emi_available) return -1;
-        if (!a.emi_available && b.emi_available) return 1;
-        return b.profit_margin - a.profit_margin;
-      });
+      list.sort((a, b) => b.profit_margin - a.profit_margin);
     } else {
       // Top Selling - simply order by highest stock velocity or creation
       list.sort((a, b) => b.quantity - a.quantity);
@@ -617,13 +612,6 @@ export default function CustomerShop() {
                           <Package size={20} />
                         </div>
                       )}
-                      
-                      {/* Interactive EMI mark badge */}
-                      {product.emi_available && (
-                        <div className="absolute top-1 left-1 bg-blue-600 text-white px-1 py-0.5 rounded text-[7px] font-black uppercase tracking-wider shadow">
-                          EMI
-                        </div>
-                      )}
 
                       {/* Stock Badge */}
                       <div className="absolute bottom-1 right-1">
@@ -780,12 +768,6 @@ export default function CustomerShop() {
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-300 bg-white rounded-lg">
                         <Package size={20} />
-                      </div>
-                    )}
-                    
-                    {product.emi_available && (
-                      <div className="absolute top-1 left-1 bg-blue-600 text-white px-1 py-0.5 rounded text-[7px] font-black uppercase tracking-wider shadow">
-                        EMI
                       </div>
                     )}
 
@@ -1049,7 +1031,7 @@ export default function CustomerShop() {
               {/* If query entered, filter local products. Otherwise suggest popular products */}
               {(searchQuery.trim() 
                 ? products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.brand.toLowerCase().includes(searchQuery.toLowerCase())) 
-                : products.filter(p => p.emi_available).slice(0, 4)
+                : products.filter(p => p.quantity > 0).slice(0, 4)
               ).slice(0, 5).map((prod) => (
                 <div 
                   key={prod.id}
@@ -1144,36 +1126,6 @@ export default function CustomerShop() {
               </div>
             </div>
 
-            {selectedProduct.emi_available && (
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-6 text-white shadow-lg">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2.5 bg-white/10 rounded-2xl border border-white/10">
-                    <ShoppingCart size={22} className="text-white" />
-                  </div>
-                  <div>
-                    <h5 className="text-base font-black tracking-tight leading-none text-white">Easy Monthly Installment (EMI) Plan</h5>
-                    <p className="text-blue-100 text-[10px] font-black uppercase tracking-wider mt-1">Split seamlessly into {selectedProduct.emi_months} installments</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-white/10 rounded-2xl p-4 border border-white/5">
-                    <p className="text-[9px] font-black text-blue-200 uppercase tracking-wider mb-1">Down Payment</p>
-                    <p className="text-lg font-black">৳{selectedProduct.emi_down_payment.toLocaleString()}</p>
-                  </div>
-                  <div className="bg-white/10 rounded-2xl p-4 border border-white/5">
-                    <p className="text-[9px] font-black text-blue-200 uppercase tracking-wider mb-1">Per Month</p>
-                    <p className="text-lg font-black">
-                      ৳{Math.round((selectedProduct.selling_price + selectedProduct.emi_profit - selectedProduct.emi_down_payment) / selectedProduct.emi_months).toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="bg-white/10 rounded-2xl p-4 border border-white/5">
-                    <p className="text-[9px] font-black text-blue-200 uppercase tracking-wider mb-1">Total Extra Cost</p>
-                    <p className="text-lg font-black">৳{selectedProduct.emi_profit.toLocaleString()}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
             <div className="pt-4">
               <h4 className="text-lg font-black text-gray-900 border-b border-gray-100 pb-3 mb-6">Confirm and Checkout</h4>
               <OrderForm 
@@ -1258,12 +1210,6 @@ export default function CustomerShop() {
                           <TelegramImage fileId={prod.image_urls[0]} className="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-300 bg-white" />
                         ) : (
                           <Package size={20} className="text-slate-200" />
-                        )}
-
-                        {prod.emi_available && (
-                          <span className="absolute top-1 left-1 bg-blue-600 text-white px-1 py-0.5 rounded text-[7px] font-black uppercase tracking-wider shadow">
-                            EMI
-                          </span>
                         )}
 
                         <span className={cn(

@@ -19,10 +19,6 @@ export default function ProductForm({ onClose }: ProductFormProps) {
     purchase_price: '',
     selling_price: '',
     quantity: '',
-    emi_available: false,
-    emi_months: '6',
-    emi_down_payment: '',
-    emi_profit: '',
   });
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -66,10 +62,6 @@ export default function ProductForm({ onClose }: ProductFormProps) {
         selling_price: sellingPrice,
         profit_margin: profitMargin,
         quantity: quantity,
-        emi_available: formData.emi_available,
-        emi_months: parseInt(formData.emi_months),
-        emi_down_payment: parseFloat(formData.emi_down_payment || '0'),
-        emi_profit: parseFloat(formData.emi_profit || '0'),
         image_urls: imageUrls,
         created_at: new Date().toISOString(),
       });
@@ -187,58 +179,6 @@ export default function ProductForm({ onClose }: ProductFormProps) {
               ৳{(parseFloat(formData.selling_price || '0') - parseFloat(formData.purchase_price || '0')).toLocaleString()}
             </div>
           </div>
-        </div>
-
-        <div className="p-4 bg-blue-50 rounded-xl border border-blue-100 space-y-4">
-          <div className="flex items-center justify-between">
-            <label className="text-sm font-bold text-blue-900">Available on Installment (EMI)?</label>
-            <input
-              type="checkbox"
-              className="w-5 h-5 accent-blue-600"
-              checked={formData.emi_available}
-              onChange={e => setFormData({ ...formData, emi_available: e.target.checked })}
-            />
-          </div>
-
-          {formData.emi_available && (
-            <div className="grid grid-cols-1 gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-blue-700 mb-1 uppercase">EMI Months</label>
-                  <select
-                    className="w-full px-3 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-                    value={formData.emi_months}
-                    onChange={e => setFormData({ ...formData, emi_months: e.target.value })}
-                  >
-                    <option value="3">3 Months</option>
-                    <option value="6">6 Months</option>
-                    <option value="12">12 Months</option>
-                    <option value="24">24 Months</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-blue-700 mb-1 uppercase">Down Payment</label>
-                  <input
-                    type="number"
-                    className="w-full px-3 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-                    placeholder="৳0.00"
-                    value={formData.emi_down_payment}
-                    onChange={e => setFormData({ ...formData, emi_down_payment: e.target.value })}
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-blue-700 mb-1 uppercase">EMI Profit (Extra Lav)</label>
-                <input
-                  type="number"
-                  className="w-full px-3 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
-                  placeholder="৳0.00"
-                  value={formData.emi_profit}
-                  onChange={e => setFormData({ ...formData, emi_profit: e.target.value })}
-                />
-              </div>
-            </div>
-          )}
         </div>
 
         <div>

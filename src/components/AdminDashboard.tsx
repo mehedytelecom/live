@@ -113,10 +113,6 @@ export default function AdminDashboard() {
     discount_price: '',
     category: '',
     quantity: '',
-    emi_available: false,
-    emi_months: '6',
-    emi_down_payment: '',
-    emi_profit: '',
   });
   const [productUploadFiles, setProductUploadFiles] = useState<File[]>([]);
   const [productPreviews, setProductPreviews] = useState<string[]>([]);
@@ -346,10 +342,6 @@ export default function AdminDashboard() {
         category: productForm.category || '',
         profit_margin: profit,
         quantity: qty,
-        emi_available: productForm.emi_available,
-        emi_months: parseInt(productForm.emi_months),
-        emi_down_payment: parseFloat(productForm.emi_down_payment || '0'),
-        emi_profit: parseFloat(productForm.emi_profit || '0'),
         image_urls: uploadedFileIds,
         created_at: new Date().toISOString(),
       });
@@ -366,10 +358,6 @@ export default function AdminDashboard() {
         discount_price: '',
         category: '',
         quantity: '',
-        emi_available: false,
-        emi_months: '6',
-        emi_down_payment: '',
-        emi_profit: '',
       });
       setProductUploadFiles([]);
       setProductPreviews([]);
@@ -396,10 +384,6 @@ export default function AdminDashboard() {
       discount_price: prod.discount_price?.toString() || '',
       category: prod.category || '',
       quantity: prod.quantity.toString(),
-      emi_available: prod.emi_available,
-      emi_months: prod.emi_months?.toString() || '6',
-      emi_down_payment: prod.emi_down_payment?.toString() || '',
-      emi_profit: prod.emi_profit?.toString() || '',
     });
     setProductPreviews(prod.image_urls || []);
     setProductUploadFiles([]);
@@ -440,10 +424,6 @@ export default function AdminDashboard() {
         category: productForm.category || '',
         profit_margin: profit,
         quantity: qty,
-        emi_available: productForm.emi_available,
-        emi_months: parseInt(productForm.emi_months),
-        emi_down_payment: parseFloat(productForm.emi_down_payment || '0'),
-        emi_profit: parseFloat(productForm.emi_profit || '0'),
         image_urls: finalImages,
       });
 
@@ -1625,60 +1605,6 @@ export default function AdminDashboard() {
             <span className="text-emerald-400 font-extrabold text-sm">
               ৳{(parseFloat(productForm.selling_price || '0') - parseFloat(productForm.purchase_price || '0')).toLocaleString()}
             </span>
-          </div>
-
-          {/* EMI Config container widget */}
-          <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-xs font-black uppercase text-white block">Active Installment EMI</span>
-                <span className="text-[9px] text-slate-400">Permit monthly client billing schedules for this device</span>
-              </div>
-              <input
-                type="checkbox"
-                checked={productForm.emi_available}
-                onChange={e => setProductForm({ ...productForm, emi_available: e.target.checked })}
-                className="w-5 h-5 accent-orange-500 bg-slate-900 border-none rounded cursor-pointer"
-              />
-            </div>
-
-            {productForm.emi_available && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 mb-1">Maturity months</label>
-                  <select
-                    value={productForm.emi_months}
-                    onChange={e => setProductForm({ ...productForm, emi_months: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-900 border border-slate-800 text-slate-300 rounded-lg text-xs outline-none"
-                  >
-                    <option value="3">3 Months</option>
-                    <option value="6">6 Months</option>
-                    <option value="12">12 Months</option>
-                    <option value="24">24 Months</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 mb-1">Down Payment (৳)</label>
-                  <input
-                    type="number"
-                    placeholder="e.g. 15000"
-                    value={productForm.emi_down_payment}
-                    onChange={e => setProductForm({ ...productForm, emi_down_payment: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-slate-900 border border-slate-800 text-slate-100 rounded-lg text-xs outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 mb-1">Interest / Profit (৳)</label>
-                  <input
-                    type="number"
-                    placeholder="e.g. 3000 markup"
-                    value={productForm.emi_profit}
-                    onChange={e => setProductForm({ ...productForm, emi_profit: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-slate-900 border border-slate-800 text-slate-100 rounded-lg text-xs outline-none"
-                  />
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Product Attach pictures widget with Telegram upload */}

@@ -5,7 +5,6 @@ import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, User as Fireba
 import { auth } from './firebase';
 import AdminDashboard from './components/AdminDashboard';
 import CustomerShop from './components/CustomerShop';
-import EMICalculator from './components/EMICalculator';
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<FirebaseUser | null>(null);
@@ -73,8 +72,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/live" replace />} />
         <Route path="/live" element={<CustomerShop />} />
-        <Route path="/live/emi-calculator" element={<EMICalculator />} />
-        <Route path="/emi-calculator" element={<Navigate to="/live/emi-calculator" replace />} />
         
         <Route path="/mehedy" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
         <Route path="/mehedy/inventory" element={<AdminLayout><AdminDashboard /></AdminLayout>} />

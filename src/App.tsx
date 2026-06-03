@@ -73,10 +73,10 @@ export default function App() {
         <Route path="/" element={<Navigate to="/live" replace />} />
         <Route path="/live" element={<CustomerShop />} />
         
-        <Route path="/mehedy" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        <Route path="/mehedy/inventory" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        <Route path="/mehedy/sales" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        <Route path="/mehedy/orders" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+        <Route path="/liveadmin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+        <Route path="/liveadmin/inventory" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+        <Route path="/liveadmin/sales" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+        <Route path="/liveadmin/orders" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
       </Routes>
     </Router>
   );
